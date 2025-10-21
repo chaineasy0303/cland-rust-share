@@ -2,5 +2,24 @@
 name = "cland-rust-share"
 version = "0.1.0"
 edition = "2024"
+description = "A Rust library for sharing functionality"
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/chaineasy0303/cland-rust-share"
+documentation = "https://docs.rs/cland-rust-share"
+readme = "README.md"
+keywords = ["library", "share", "utility"]
+categories = ["development-tools"]
+
+# 库配置
+[lib]
+name = "cland_rust_share"
+path = "src/lib.rs"
+crate-type = ["lib"]
+
+# 可选的二进制程序（如果需要）
+[[bin]]
+name = "cland-rust-share"
+path = "src/main.rs"
 
 [dependencies]
