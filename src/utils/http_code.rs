@@ -71,6 +71,26 @@ pub fn is_valid_code(code: i64) -> bool {
     }
 }
 
+/// Common error categories as enum. Values are short-form categories.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ErrorCode {
+    Ok = 200,
+    BadRequest = 400,
+    Internal = 500,
+}
+
+impl ErrorCode {
+    /// numeric value
+    pub fn value(self) -> i64 {
+        self as i64
+    }
+
+    /// convenience: produce StructuredCode with zeroed system/detail
+    pub fn as_structured(self) -> StructuredCode {
+        StructuredCode { category: self as i32, system: 0, detail: 0 }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

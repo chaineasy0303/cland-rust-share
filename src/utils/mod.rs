@@ -3,8 +3,6 @@
 //! This module provides various utility functions that are commonly
 //! used across different projects.
 
-use crate::error::CommonError;
-
 /// String utilities
 pub mod string {
     // use super::*;
@@ -88,36 +86,6 @@ pub mod datetime {
     }
 }
 
-/// File system utilities
-pub mod fs {
-    use super::*;
-    use std::fs;
-    use std::path::Path;
-
-    /// Read file content as string
-    pub fn read_file(path: &str) -> Result<String, CommonError> {
-        fs::read_to_string(path).map_err(CommonError::from)
-    }
-
-    /// Write string content to file
-    pub fn write_file(path: &str, content: &str) -> Result<(), CommonError> {
-        fs::write(path, content).map_err(CommonError::from)
-    }
-
-    /// Check if file exists
-    pub fn file_exists(path: &str) -> bool {
-        Path::new(path).exists()
-    }
-
-    /// Create directory if it doesn't exist
-    pub fn create_dir_if_not_exists(path: &str) -> Result<(), CommonError> {
-        if !Path::new(path).exists() {
-            fs::create_dir_all(path).map_err(CommonError::from)
-        } else {
-            Ok(())
-        }
-    }
-}
 
 /// Validation utilities
 pub mod validation {
@@ -170,8 +138,8 @@ pub mod collection {
 // Re-export commonly used utilities
 pub use string::{is_blank, to_snake_case, truncate_with_ellipsis};
 pub use datetime::{current_timestamp, current_timestamp_millis, format_duration};
-pub use fs::{create_dir_if_not_exists, file_exists, read_file, write_file};
 pub use validation::{is_valid_email, is_valid_phone, is_valid_url};
 
 pub mod http_code;
 pub use http_code::{make_code, parse_code, is_valid_code, StructuredCode};
+pub use http_code::ErrorCode;

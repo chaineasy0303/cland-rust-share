@@ -11,10 +11,10 @@ pub mod utils;
 pub mod http_response;
 
 // Re-export commonly used types for convenience
-pub use error::CommonError;
 pub use config::Config;
 pub use crypto::CryptoError;
 pub use http_response::{Response, Pagination};
+pub use error::CommonError;
 pub use utils::{make_code, parse_code, is_valid_code, StructuredCode};
 pub use utils::ErrorCode;
 

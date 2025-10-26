@@ -3,8 +3,6 @@
 //! This module provides common cryptographic operations including
 //! encryption, decryption, hashing, and secure random generation.
 
-use crate::error::CommonError;
-
 /// Cryptographic error type
 #[derive(Debug, thiserror::Error)]
 pub enum CryptoError {
@@ -19,12 +17,6 @@ pub enum CryptoError {
     /// Encryption/decryption failed
     #[error("Crypto operation failed: {0}")]
     OperationFailed(String),
-}
-
-impl From<CryptoError> for CommonError {
-    fn from(err: CryptoError) -> Self {
-        CommonError::crypto(err.to_string())
-    }
 }
 
 /// AES-256-GCM encryption
