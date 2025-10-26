@@ -4,8 +4,9 @@
 //! configuration from various sources (environment variables, files, etc.).
 
 use std::collections::HashMap;
+use std::error::Error as StdError;
 
-use crate::error::CommonError;
+type DynError = Box<dyn StdError + Send + Sync + 'static>;
 
 /// Main configuration structure
 #[derive(Debug, Clone)]
@@ -157,7 +158,7 @@ impl Config {
     }
 
     /// Load configuration from environment variables
-    pub fn from_env() -> Result<Self, CommonError> {
+    pub fn from_env() -> Result<Self, DynError> {
         let mut builder = ConfigBuilder::new();
 
         if let Ok(name) = std::env::var("APP_NAME") {
@@ -188,7 +189,7 @@ impl Config {
     }
 
     /// Load default configuration
-    pub fn load_default() -> Result<Self, CommonError> {
+    pub fn load_default() -> Result<Self, DynError> {
         Self::from_env()
     }
 }
