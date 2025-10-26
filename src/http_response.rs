@@ -23,19 +23,7 @@ pub fn envelope<T: Serialize>(code: i64, msg: impl AsRef<str>, data: Option<&T>)
 
 /// 快捷构造器
 pub fn ok<T: Serialize>(data: &T) -> Value {
-    envelope(200i64, "", Some(data))
-}
-
-pub fn created<T: Serialize>(data: &T) -> Value {
-    envelope(201i64, "创建成功", Some(data))
-}
-
-pub fn msg_ok<T: Serialize>(msg: &str, data: &T) -> Value {
-    envelope(200i64, msg, Some(data))
-}
-
-pub fn msg_created<T: Serialize>(msg: &str, data: &T) -> Value {
-    envelope(201i64, msg, Some(data))
+    envelope(crate::ErrorCode::Ok.value(), "", Some(data))
 }
 
 /// 简化的对外 API：只提供三个常用构造器
@@ -44,15 +32,15 @@ pub fn msg_created<T: Serialize>(msg: &str, data: &T) -> Value {
 /// - `param_error`：参数错误，使用文档示例的参数错误码 40010010001
 /// - `system_error`：系统错误，使用文档示例的系统错误码 50020030002
 pub fn success<T: Serialize>(data: &T) -> Value {
-    envelope(200i64, "Success", Some(data))
+    envelope(crate::ErrorCode::Ok.value(), "Success", Some(data))
 }
 
 pub fn param_error(msg: &str) -> Value {
-    envelope::<()>(40010010001i64, msg, None::<&()>)
+    envelope::<()>(crate::ErrorCode::BadRequest.value(), msg, None::<&()> )
 }
 
 pub fn system_error(msg: &str) -> Value {
-    envelope::<()>(50020030002i64, msg, None::<&()>)
+    envelope::<()>(crate::ErrorCode::Internal.value(), msg, None::<&()> )
 }
 
 /// 无 data 的错误/提示
