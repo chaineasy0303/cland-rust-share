@@ -172,3 +172,6 @@ pub use string::{is_blank, to_snake_case, truncate_with_ellipsis};
 pub use datetime::{current_timestamp, current_timestamp_millis, format_duration};
 pub use fs::{create_dir_if_not_exists, file_exists, read_file, write_file};
 pub use validation::{is_valid_email, is_valid_phone, is_valid_url};
+
+pub mod http_code;
+pub use http_code::{make_code, parse_code, is_valid_code, StructuredCode};
