@@ -3,8 +3,6 @@
 //! This module provides various utility functions that are commonly
 //! used across different projects.
 
-use std::time::{SystemTime, UNIX_EPOCH};
-
 use crate::error::CommonError;
 
 /// String utilities
@@ -58,7 +56,7 @@ pub mod string {
 
 /// Date and time utilities
 pub mod datetime {
-    // use super::*;
+    use std::time::{SystemTime, UNIX_EPOCH};
 
     /// Get current timestamp in seconds
     pub fn current_timestamp() -> u64 {
