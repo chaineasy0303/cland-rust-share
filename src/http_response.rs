@@ -1,4 +1,52 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
+
+/// 通用 HTTP JSON envelope 构造器
+///
+/// 格式:
+/// {
+///   "code": <int>,
+///   "msg": "<string>",
+///   "data": <any|null>
+/// }
+pub fn envelope<T: Serialize>(code: i64, msg: impl AsRef<str>, data: Option<&T>) -> Value {
+    let data_value = match data {
+        Some(d) => serde_json::to_value(d).unwrap_or(Value::Null),
+        None => Value::Null,
+    };
+    serde_json::json!({
+        "code": code,
+        "msg": msg.as_ref(),
+        "data": data_value
+    })
+}
+
+/// 快捷构造器
+pub fn ok<T: Serialize>(data: &T) -> Value {
+    envelope(200i64, "", Some(data))
+}
+
+pub fn created<T: Serialize>(data: &T) -> Value {
+    envelope(201i64, "创建成功", Some(data))
+}
+
+pub fn msg_ok<T: Serialize>(msg: &str, data: &T) -> Value {
+    envelope(200i64, msg, Some(data))
+}
+
+pub fn msg_created<T: Serialize>(msg: &str, data: &T) -> Value {
+    envelope(201i64, msg, Some(data))
+}
+
+/// 无 data 的错误/提示
+pub fn error(code: i64, msg: &str) -> Value {
+    envelope::<()>(code, msg, None::<&()>)
+}
+
+/// 带 data 的错误
+pub fn error_data<T: Serialize>(code: i64, msg: &str, data: &T) -> Value {
+    envelope(code, msg, Some(data))
+}
 
 /// Standard HTTP response body defined in docs.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
