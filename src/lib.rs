@@ -16,6 +16,7 @@ pub use config::Config;
 pub use crypto::CryptoError;
 pub use http_response::{Response, Pagination};
 pub use utils::{make_code, parse_code, is_valid_code, StructuredCode};
+pub use utils::ErrorCode;
 
 /// Library version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
