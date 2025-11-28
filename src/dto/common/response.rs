@@ -1,20 +1,57 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+// 条件导入：仅保留必要的 ToSchema（4.2.3 兼容）
+#[cfg(feature = "utoipa_support")]
+use utoipa::ToSchema;
+
 use crate::ErrorCode;
 
-/// Standard API response body defined in docs.
+/// 全局统一 API 响应体格式
+///
+/// 格式说明：
+/// - code: 业务状态码（字符串类型，200=成功）
+/// - msg: 响应描述信息
+/// - data: 响应数据（可选，失败时可省略）
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+// 条件派生：完全依赖派生宏生成 ToSchema
+#[cfg_attr(feature = "utoipa_support", derive(ToSchema))]
+// 结构体 Swagger 示例（仅保留 example，移除不支持的 description）
+#[cfg_attr(
+    feature = "utoipa_support",
+    schema(
+        example = json!({
+            "code": "200",
+            "msg": "Success",
+            "data": { "user_id": "123e4567-e89b-12d3-a456-426614174000", "username": "example" }
+        })
+    )
+)]
 pub struct ApiResponse<T> {
-    /// 状态码 (使用字符串)
+    /// 业务状态码（200=成功，常见错误码：40010010001=参数错误、50020030002=系统错误）
+    #[cfg_attr(
+        feature = "utoipa_support",
+        schema(example = "200")  // 仅保留支持的 example 属性
+    )]
     pub code: String,
-    /// 描述信息
+
+    /// 响应描述信息（成功时为 Success，错误时为具体原因）
+    #[cfg_attr(
+        feature = "utoipa_support",
+        schema(example = "Success")  // 仅保留支持的 example 属性
+    )]
     pub msg: String,
-    /// 响应数据
+
+    /// 响应数据（可选，失败时可省略）
     #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(
+        feature = "utoipa_support",
+        schema(nullable = true)  // 仅保留支持的 nullable 属性
+    )]
     pub data: Option<T>,
 }
 
+// 原有业务逻辑完全不变（以下代码无修改）
 impl<T> ApiResponse<T> {
     /// Create a success response with data
     pub fn success(data: T) -> Self {
@@ -72,11 +109,11 @@ pub fn success<T: Serialize>(data: &T) -> Value {
 }
 
 pub fn param_error(msg: &str) -> Value {
-    envelope::<()>(ErrorCode::BadRequest.value().to_string(), msg, None::<&()> )
+    envelope::<()>(ErrorCode::BadRequest.value().to_string(), msg, None::<&()>)
 }
 
 pub fn system_error(msg: &str) -> Value {
-    envelope::<()>(ErrorCode::Internal.value().to_string(), msg, None::<&()> )
+    envelope::<()>(ErrorCode::Internal.value().to_string(), msg, None::<&()>)
 }
 
 /// 无 data 的错误/提示
