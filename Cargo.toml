@@ -14,6 +14,11 @@ rand = "0.8"
 regex = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+utoipa = { version = "5", optional = true }
 
 [dev-dependencies]
 criterion = "0.5"
+
+[features]
+default = []
+utoipa_support = ["dep:utoipa"]  # 启用该特性才会引入 Utoipa
