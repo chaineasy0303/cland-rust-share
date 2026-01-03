@@ -26,13 +26,16 @@ fn test_config_builder() {
     assert_eq!(config.database.timeout_seconds, 60);
     assert_eq!(config.encryption.key, "test_key_1234567890123456789012");
     assert_eq!(config.encryption.algorithm, "aes-256-gcm");
-    assert_eq!(config.custom.get("custom_key"), Some(&"custom_value".to_string()));
+    assert_eq!(
+        config.custom.get("custom_key"),
+        Some(&"custom_value".to_string())
+    );
 }
 
 #[test]
 fn test_config_default() {
     let config = config::Config::default();
-    
+
     assert!(config.app.name.is_empty());
     assert!(config.app.version.is_empty());
     assert_eq!(config.app.environment, "development");
