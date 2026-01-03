@@ -79,10 +79,7 @@ pub fn parse_code(code: i64) -> Result<StructuredCode, CodeError> {
 
 /// Validate a code (short or structured) for basic semantic rules.
 pub fn is_valid_code(code: i64) -> bool {
-    match parse_code(code) {
-        Ok(_) => true,
-        Err(_) => false,
-    }
+    parse_code(code).is_ok()
 }
 
 /// Common error categories as enum. Values are short-form categories.

@@ -44,14 +44,14 @@ pub fn aes_decrypt(ciphertext: &[u8], key: &str) -> Result<String, CryptoError> 
         });
     }
 
-    if ciphertext.len() <= key.as_bytes().len() {
+    if ciphertext.len() <= key.len() {
         return Err(CryptoError::InvalidInput(
             "Ciphertext too short".to_string(),
         ));
     }
 
     // Placeholder implementation
-    let plaintext_len = ciphertext.len() - key.as_bytes().len();
+    let plaintext_len = ciphertext.len() - key.len();
     let plaintext_bytes = &ciphertext[..plaintext_len];
 
     String::from_utf8(plaintext_bytes.to_vec())

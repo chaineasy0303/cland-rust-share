@@ -142,6 +142,12 @@ impl ConfigBuilder {
     }
 }
 
+impl Default for ConfigBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Encryption configuration
 #[derive(Debug, Clone)]
 pub struct EncryptionConfig {
