@@ -17,14 +17,17 @@ pub mod string {
         let mut result = String::new();
         let mut chars = s.chars().peekable();
         let mut prev_was_upper = false;
-        
+
         while let Some(c) = chars.next() {
             if c.is_uppercase() {
                 // Add underscore if:
                 // 1. Not the first character AND
                 // 2. Previous character was lowercase OR
                 // 3. Next character is lowercase (handles HTTPRequest -> http_request)
-                if !result.is_empty() && (prev_was_upper == false || chars.peek().map_or(false, |&next| next.is_lowercase())) {
+                if !result.is_empty()
+                    && (!prev_was_upper
+                        || chars.peek().is_some_and(|&next| next.is_lowercase()))
+                {
                     result.push('_');
                 }
                 result.push(c.to_ascii_lowercase());
@@ -34,7 +37,7 @@ pub mod string {
                 prev_was_upper = false;
             }
         }
-        
+
         result
     }
 
@@ -86,10 +89,8 @@ pub mod datetime {
     }
 }
 
-
 /// Validation utilities
 pub mod validation {
-    
 
     /// Validate email format
     pub fn is_valid_email(email: &str) -> bool {
@@ -136,10 +137,10 @@ pub mod collection {
 }
 
 // Re-export commonly used utilities
-pub use string::{is_blank, to_snake_case, truncate_with_ellipsis};
 pub use datetime::{current_timestamp, current_timestamp_millis, format_duration};
+pub use string::{is_blank, to_snake_case, truncate_with_ellipsis};
 pub use validation::{is_valid_email, is_valid_phone, is_valid_url};
 
 pub mod http_code;
-pub use http_code::{make_code, parse_code, is_valid_code, StructuredCode};
 pub use http_code::ErrorCode;
+pub use http_code::{StructuredCode, is_valid_code, make_code, parse_code};

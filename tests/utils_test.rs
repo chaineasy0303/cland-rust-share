@@ -29,7 +29,7 @@ fn test_datetime_utilities() {
     // Test current timestamps (just verify they return reasonable values)
     let timestamp_secs = utils::current_timestamp();
     let timestamp_millis = utils::current_timestamp_millis();
-    
+
     assert!(timestamp_secs > 0);
     assert!(timestamp_millis > 0);
     assert!(timestamp_millis > timestamp_secs as u128 * 1000);
@@ -72,7 +72,7 @@ fn test_collection_utilities() {
     // Test vec_to_hashmap
     let vec = vec!["a", "b", "c"];
     let map = collection::vec_to_hashmap(vec, |&s| (s.to_string(), s.len()));
-    
+
     assert_eq!(map.get("a"), Some(&1));
     assert_eq!(map.get("b"), Some(&1));
     assert_eq!(map.get("c"), Some(&1));

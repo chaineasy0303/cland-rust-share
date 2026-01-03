@@ -55,22 +55,38 @@ pub struct ApiResponse<T> {
 impl<T> ApiResponse<T> {
     /// Create a success response with data
     pub fn success(data: T) -> Self {
-        ApiResponse { code: "200".to_string(), msg: "Success".to_string(), data: Some(data) }
+        ApiResponse {
+            code: "200".to_string(),
+            msg: "Success".to_string(),
+            data: Some(data),
+        }
     }
 
     /// Create a success response without data
     pub fn ok() -> Self {
-        ApiResponse { code: "200".to_string(), msg: "Success".to_string(), data: None }
+        ApiResponse {
+            code: "200".to_string(),
+            msg: "Success".to_string(),
+            data: None,
+        }
     }
 
     /// Create an error response with code and message
     pub fn error(code: impl Into<String>, msg: impl Into<String>) -> Self {
-        ApiResponse { code: code.into(), msg: msg.into(), data: None }
+        ApiResponse {
+            code: code.into(),
+            msg: msg.into(),
+            data: None,
+        }
     }
 
     /// Create an error response with data
     pub fn error_with_data(code: impl Into<String>, msg: impl Into<String>, data: T) -> Self {
-        ApiResponse { code: code.into(), msg: msg.into(), data: Some(data) }
+        ApiResponse {
+            code: code.into(),
+            msg: msg.into(),
+            data: Some(data),
+        }
     }
 }
 
@@ -82,7 +98,11 @@ impl<T> ApiResponse<T> {
 ///   "msg": "<string>",
 ///   "data": <any|null>
 /// }
-pub fn envelope<T: Serialize>(code: impl AsRef<str>, msg: impl AsRef<str>, data: Option<&T>) -> Value {
+pub fn envelope<T: Serialize>(
+    code: impl AsRef<str>,
+    msg: impl AsRef<str>,
+    data: Option<&T>,
+) -> Value {
     let data_value = match data {
         Some(d) => serde_json::to_value(d).unwrap_or(Value::Null),
         None => Value::Null,
@@ -140,7 +160,8 @@ mod tests {
 
     #[test]
     fn serialize_error() {
-        let r: ApiResponse<()> = ApiResponse::error("40010010001", "Invalid parameter: user_id is missing");
+        let r: ApiResponse<()> =
+            ApiResponse::error("40010010001", "Invalid parameter: user_id is missing");
         let s = serde_json::to_string(&r).unwrap();
         assert!(s.contains("\"code\":\"40010010001\""));
         assert!(s.contains("Invalid parameter"));

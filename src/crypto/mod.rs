@@ -44,14 +44,16 @@ pub fn aes_decrypt(ciphertext: &[u8], key: &str) -> Result<String, CryptoError> 
         });
     }
 
-    if ciphertext.len() <= key.as_bytes().len() {
-        return Err(CryptoError::InvalidInput("Ciphertext too short".to_string()));
+    if ciphertext.len() <= key.len() {
+        return Err(CryptoError::InvalidInput(
+            "Ciphertext too short".to_string(),
+        ));
     }
 
     // Placeholder implementation
-    let plaintext_len = ciphertext.len() - key.as_bytes().len();
+    let plaintext_len = ciphertext.len() - key.len();
     let plaintext_bytes = &ciphertext[..plaintext_len];
-    
+
     String::from_utf8(plaintext_bytes.to_vec())
         .map_err(|e| CryptoError::InvalidInput(format!("Invalid UTF-8: {}", e)))
 }
@@ -59,7 +61,7 @@ pub fn aes_decrypt(ciphertext: &[u8], key: &str) -> Result<String, CryptoError> 
 /// Generate SHA-256 hash
 pub fn sha256_hash(data: &[u8]) -> Vec<u8> {
     use sha2::{Digest, Sha256};
-    
+
     let mut hasher = Sha256::new();
     hasher.update(data);
     hasher.finalize().to_vec()
@@ -68,7 +70,7 @@ pub fn sha256_hash(data: &[u8]) -> Vec<u8> {
 /// Generate secure random bytes
 pub fn generate_random_bytes(length: usize) -> Result<Vec<u8>, CryptoError> {
     use rand::RngCore;
-    
+
     let mut rng = rand::thread_rng();
     let mut bytes = vec![0u8; length];
     rng.fill_bytes(&mut bytes);
@@ -78,31 +80,31 @@ pub fn generate_random_bytes(length: usize) -> Result<Vec<u8>, CryptoError> {
 /// Generate secure random string
 pub fn generate_random_string(length: usize) -> Result<String, CryptoError> {
     use rand::Rng;
-    
+
     const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
                             abcdefghijklmnopqrstuvwxyz\
                             0123456789";
-    
+
     let mut rng = rand::thread_rng();
     let mut result = String::with_capacity(length);
-    
+
     for _ in 0..length {
         let idx = rng.gen_range(0..CHARSET.len());
         result.push(CHARSET[idx] as char);
     }
-    
+
     Ok(result)
 }
 
 /// Simple XOR encryption (for demonstration purposes)
 pub fn xor_encrypt(data: &[u8], key: &[u8]) -> Vec<u8> {
     let mut result = Vec::with_capacity(data.len());
-    
+
     for (i, &byte) in data.iter().enumerate() {
         let key_byte = key[i % key.len()];
         result.push(byte ^ key_byte);
     }
-    
+
     result
 }
 
