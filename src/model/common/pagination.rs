@@ -12,11 +12,7 @@ pub struct Pagination<T> {
 
 impl<T> Pagination<T> {
     pub fn new(total: u64, page: u64, size: u64, list: Vec<T>) -> Self {
-        let pages = if size > 0 {
-            total.div_ceil(size)
-        } else {
-            0
-        };
+        let pages = if size > 0 { total.div_ceil(size) } else { 0 };
         Pagination {
             total,
             page,

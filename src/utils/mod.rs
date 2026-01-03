@@ -25,8 +25,7 @@ pub mod string {
                 // 2. Previous character was lowercase OR
                 // 3. Next character is lowercase (handles HTTPRequest -> http_request)
                 if !result.is_empty()
-                    && (!prev_was_upper
-                        || chars.peek().is_some_and(|&next| next.is_lowercase()))
+                    && (!prev_was_upper || chars.peek().is_some_and(|&next| next.is_lowercase()))
                 {
                     result.push('_');
                 }

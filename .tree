@@ -1,0 +1,41 @@
+├── .gitignore
+├── Cargo.lock
+├── Cargo.toml
+├── docs
+│  ├── HTTP 消息体标准定义.md
+│  ├── http_response_usage.md
+│  └── system_code_generator.md
+├── examples
+│  └── simple_usage.rs
+├── LICENSE
+├── README.md
+├── rustfmt.toml
+├── src
+│  ├── api
+│  │  ├── http_response.rs
+│  │  └── mod.rs
+│  ├── config
+│  │  └── mod.rs
+│  ├── crypto
+│  │  └── mod.rs
+│  ├── dto
+│  │  ├── common
+│  │  │  ├── mod.rs
+│  │  │  └── response.rs
+│  │  └── mod.rs
+│  ├── error.rs
+│  ├── lib.rs
+│  ├── model
+│  │  ├── common
+│  │  │  ├── mod.rs
+│  │  │  └── pagination.rs
+│  │  └── mod.rs
+│  └── utils
+│    ├── http_code.rs
+│    └── mod.rs
+└── tests
+  ├── config_test.rs
+  ├── crypto_test.rs
+  ├── http_code_test.rs
+  ├── http_error_code_test.rs
+  └── utils_test.rs
