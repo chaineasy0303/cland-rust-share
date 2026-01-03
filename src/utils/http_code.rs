@@ -13,18 +13,24 @@ pub struct StructuredCode {
 
 #[derive(Debug, thiserror::Error)]
 pub enum CodeError {
-    #[error("invalid length: expected 3,4 or 11 digits")] 
+    #[error("invalid length: expected 3,4 or 11 digits")]
     InvalidLength,
-    #[error("invalid numeric value")] 
+    #[error("invalid numeric value")]
     InvalidNumber,
-    #[error("invalid category: {0}")] 
+    #[error("invalid category: {0}")]
     InvalidCategory(i32),
 }
 
 impl fmt::Display for StructuredCode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // produce full 11-digit code as i64-safe string
-        write!(f, "{category:03}{system:04}{detail:04}", category=self.category, system=self.system, detail=self.detail)
+        write!(
+            f,
+            "{category:03}{system:04}{detail:04}",
+            category = self.category,
+            system = self.system,
+            detail = self.detail
+        )
     }
 }
 
@@ -48,7 +54,11 @@ pub fn make_code(category: i32, system: i32, detail: i32) -> Result<i64, CodeErr
 /// Parse an integer code into StructuredCode. Accepts either 200/400/500 (short) or full 11-digit codes.
 pub fn parse_code(code: i64) -> Result<StructuredCode, CodeError> {
     if code == 200 || code == 400 || code == 500 {
-        return Ok(StructuredCode { category: code as i32, system: 0, detail: 0 });
+        return Ok(StructuredCode {
+            category: code as i32,
+            system: 0,
+            detail: 0,
+        });
     }
     if code < 0 {
         return Err(CodeError::InvalidNumber);
@@ -60,7 +70,11 @@ pub fn parse_code(code: i64) -> Result<StructuredCode, CodeError> {
     if !(category == 200 || category == 400 || category == 500) {
         return Err(CodeError::InvalidCategory(category));
     }
-    Ok(StructuredCode { category, system, detail })
+    Ok(StructuredCode {
+        category,
+        system,
+        detail,
+    })
 }
 
 /// Validate a code (short or structured) for basic semantic rules.
@@ -87,7 +101,11 @@ impl ErrorCode {
 
     /// convenience: produce StructuredCode with zeroed system/detail
     pub fn as_structured(self) -> StructuredCode {
-        StructuredCode { category: self as i32, system: 0, detail: 0 }
+        StructuredCode {
+            category: self as i32,
+            system: 0,
+            detail: 0,
+        }
     }
 }
 

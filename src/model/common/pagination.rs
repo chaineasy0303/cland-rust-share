@@ -12,8 +12,18 @@ pub struct Pagination<T> {
 
 impl<T> Pagination<T> {
     pub fn new(total: u64, page: u64, size: u64, list: Vec<T>) -> Self {
-        let pages = if size > 0 { (total + size - 1) / size } else { 0 };
-        Pagination { total, page, size, pages, list }
+        let pages = if size > 0 {
+            (total + size - 1) / size
+        } else {
+            0
+        };
+        Pagination {
+            total,
+            page,
+            size,
+            pages,
+            list,
+        }
     }
 }
 
@@ -23,7 +33,7 @@ mod tests {
 
     #[test]
     fn pagination_basic() {
-        let p = Pagination::new(100, 1, 10, vec![1,2,3]);
+        let p = Pagination::new(100, 1, 10, vec![1, 2, 3]);
         assert_eq!(p.pages, 10);
     }
 }

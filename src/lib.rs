@@ -4,22 +4,22 @@
 //! team projects, including error handling, configuration management, and
 //! cryptographic operations.
 
-pub mod error;
+pub mod api;
 pub mod config;
 pub mod crypto;
-pub mod utils;
-pub mod api;
-pub mod model;
 pub mod dto;
+pub mod error;
+pub mod model;
+pub mod utils;
 
 // Re-export commonly used types for convenience
 pub use config::Config;
 pub use crypto::CryptoError;
-pub use model::Pagination;
 pub use dto::ApiResponse;
 pub use error::CommonError;
-pub use utils::{make_code, parse_code, is_valid_code, StructuredCode};
+pub use model::Pagination;
 pub use utils::ErrorCode;
+pub use utils::{StructuredCode, is_valid_code, make_code, parse_code};
 
 /// Library version information
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
